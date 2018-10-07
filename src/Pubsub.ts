@@ -1,29 +1,16 @@
 let subscriber: any;
-let publisher: any;
 
 export default new class PubSub {
-    init (Subscriber: any, Publisher: any) {
+    init (Subscriber: any) {
         if (typeof Subscriber === undefined) {
             throw new Error ('Please provide a new redis instance for subscribe')
         }
 
-        if (typeof Publisher === undefined) {
-            throw new Error ('Please provide a new redis instance for publisher')
-        }
-
         subscriber = Subscriber;
-        publisher = Publisher;
-    }
-
-    publish(channel: string, message: string) {
-        if (typeof publisher.publish === undefined) {
-            throw new Error('The provided redis client doesn\'t supports publishing messages');
-        }
-        publisher.publish(channel, message);
     }
 
     subscribe(channel: string) {
-        if (typeof publisher.subscribe === undefined) {
+        if (typeof subscriber.subscribe === undefined) {
             throw new Error('The provided redis client doesn\'t supports subscribing to messages');
         }
 
