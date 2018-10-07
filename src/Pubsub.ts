@@ -2,7 +2,7 @@ let subscriber: any;
 
 export default new class PubSub {
     init (Subscriber: any) {
-        if (typeof Subscriber === undefined) {
+        if (typeof Subscriber === 'undefined') {
             throw new Error ('Please provide a new redis instance for subscribe')
         }
 
@@ -10,7 +10,7 @@ export default new class PubSub {
     }
 
     subscribe(channel: string) {
-        if (typeof subscriber.subscribe === undefined) {
+        if (typeof subscriber.subscribe === 'undefined') {
             throw new Error('The provided redis client doesn\'t supports subscribing to messages');
         }
 
