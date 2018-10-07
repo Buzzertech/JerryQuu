@@ -19,7 +19,17 @@
     "type": "git",
     "url": "https://github.com/buzzertech/jerryquu.git"
   },
-  "license": "ISC",
+  "keywords": [
+    "email-queue",
+    "nodejs",
+    "redis-queue",
+    "pubsub",
+    "redis",
+    "queue",
+    "typescript",
+    "nodemailer-queue"
+  ],
+  "license": "MIT",
   "release": {
     "verifyConditions": "condition-circle"
   },
