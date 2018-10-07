@@ -6,8 +6,6 @@ export interface IQueueOpts {
     redis: any;
     /** A separate instance of redis to subscribe to events internally */
     subscriberRedis: any;
-    /** A separate instance of redis to publish events internally */
-    publisherRedis: any;
     /** Default retries is set to 4 */
     maxRetries?: number;
 }
@@ -34,11 +32,7 @@ export class Queue {
             throw new Error('Subscriber Redis Client Not provided');
         }
 
-        if (typeof this.opts.publisherRedis === undefined) {
-            throw new Error('Publisher Redis Client Not Provided');
-        }
-
-        Pubsub.init(this.opts.subscriberRedis, this.opts.publisherRedis);
+        Pubsub.init(this.opts.subscriberRedis);
     }
 
     public registerNamespace(namespace: string, handler: (namespace:string, ctx: any) => any): any {
