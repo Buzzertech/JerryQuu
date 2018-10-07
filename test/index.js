@@ -51,24 +51,21 @@ describe('JerryQuu', () => {
                 })
             });
         } catch (err) {
-            expect(err.message).to.equal('Subscriber Redis Client Not Provided');
+            expect(err.message).to.equal('Subscriber Redis Client not provided');
         }
     });
 
     it('throw an error if namespace not provided', () => {
-        try {
-            testEmailQueue.registerNamespace();
-        } catch (err) {
-            expect(err.message).to.equal('Namespace cannot be undefined or null');
-        }
+        expect(() => testEmailQueue.registerNamespace()).to.throw('Namespace cannot be undefined or null');
     });
 
     it('throws an error if an empty message is pushed', () => {
-        try {
-            testEmailQueue.pushMessage();
-        } catch (err) {
-            expect(err.message).to.equal('Message cannot be undefined or empty');
-        }
+        expect(() => testEmailQueue.pushMessage()).to.throw('Message cannot be undefined or empty');
+    });
+
+    it('throw an error if multiple namespace are tried to be registered for one instance', () => {
+        testEmailQueue.registerNamespace('mytestqueue');
+        expect(() => testEmailQueue.registerNamespace(null)).to.throw('Cannot change namespace once initialized')
     });
 
     it('can push a message', () => {
