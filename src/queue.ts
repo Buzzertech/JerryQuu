@@ -24,21 +24,28 @@ export class Queue {
     constructor(opts: IQueueOpts) {
         this.opts = opts;
 
-        if (typeof this.opts.redis === undefined) {
+        if (typeof this.opts.redis === 'undefined') {
             throw new Error('Redis client not provided');
         }
 
-        if (typeof this.opts.subscriberRedis === undefined) {
-            throw new Error('Subscriber Redis Client Not provided');
+        if (typeof this.opts.subscriberRedis === 'undefined') {
+            throw new Error('Subscriber Redis Client not provided');
         }
 
         Pubsub.init(this.opts.subscriberRedis);
     }
 
     public registerNamespace(namespace: string, handler: (namespace:string, ctx: any) => any): any {
-        if (typeof namespace === undefined) {
+        if (this.namespace && this.namespace.length > 0) {
+            throw new Error('Cannot change namespace once initialized');
+        }
+
+        if (typeof namespace === 'undefined' || typeof namespace === null) {
             throw new Error('Namespace cannot be undefined or null');
         }
+
+
+
         this.namespace = namespace;
         this.registerPollingBooth(this.namespace, handler);
         return this;
