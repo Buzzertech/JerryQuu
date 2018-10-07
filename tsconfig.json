@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-      "module": "commonjs",
-      "declaration": true,
-      "target": "es5",
-      "outDir": "dist",
-      "baseUrl": "."
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "target": "es5",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "skipLibCheck": true,
   },
-  "exclude": [
-    "node_modules/*"
-  ],
   "include": [
-      "src/**/*"
+    "src/**/*"
   ]
 }

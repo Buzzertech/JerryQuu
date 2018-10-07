@@ -3,10 +3,21 @@
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
     "test": "mocha --reporter spec --timeout 100000 --colors --exit"
   },
-  "author": "",
+  "author": "Buzzertech <support@buzzertech.com>",
+  "bugs": {
+    "url": "https://github.com/buzzertech/jerryquu/issues"
+   },
+  "homepage":"https://github.com/buzzertech/jerryquu#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buzzertech/jerryquu.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.1.5",
