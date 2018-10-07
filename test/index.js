@@ -11,8 +11,6 @@ describe('JerryQuu', () => {
     let testEmailQueue;
     const redis = Redis.createClient();
     const subscriberRedis = sinon.stub(Redis.createClient());
-    const publisherRedis = Redis.createClient();
-
 
     beforeEach(function () {
         const transport = Nodemailer.createTransport({
@@ -23,7 +21,6 @@ describe('JerryQuu', () => {
         testEmailQueue = new EmailQueue({
             redis,
             subscriberRedis,
-            publisherRedis,
             maxRetries: 2,
             transport: transport
         });
@@ -47,7 +44,6 @@ describe('JerryQuu', () => {
         try {
             new EmailQueue({
                 redis: redis,
-                publisherRedis: Redis.createClient(),
                 maxRetries: 2,
                 transport: Nodemailer.createTransport({
                     host: '127.0.0.1',
@@ -56,22 +52,6 @@ describe('JerryQuu', () => {
             });
         } catch (err) {
             expect(err.message).to.equal('Subscriber Redis Client Not Provided');
-        }
-    });
-
-    it('throws an error if publisher redis instance not passed', () => {
-        try {
-            new EmailQueue({
-                redis: redis,
-                subscriberRedis: Redis.createClient(),
-                maxRetries: 2,
-                transport: Nodemailer.createTransport({
-                    host: '127.0.0.1',
-                    port: '587'
-                })
-            });
-        } catch (err) {
-            expect(err.message).to.equal('Publisher Redis Client Not Provided');
         }
     });
 
@@ -157,7 +137,6 @@ describe('JerryQuu', () => {
     it('set custom maxRetries', () => {
         const emailQueue = new EmailQueue({
             maxRetries: 5,
-            publisherRedis: publisherRedis,
             subscriberRedis: subscriberRedis,
             redis: redis,
             transport: Nodemailer.createTransport({
