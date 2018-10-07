@@ -12,8 +12,8 @@
   "author": "Buzzertech <support@buzzertech.com>",
   "bugs": {
     "url": "https://github.com/buzzertech/jerryquu/issues"
-   },
-  "homepage":"https://github.com/buzzertech/jerryquu#readme",
+  },
+  "homepage": "https://github.com/buzzertech/jerryquu#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/buzzertech/jerryquu.git"
@@ -27,6 +27,7 @@
     "mocha": "^5.2.0",
     "nodemailer-mock": "^1.3.14",
     "redis-mock": "^0.32.0",
-    "sinon": "^6.3.4"
+    "sinon": "^6.3.4",
+    "typescript": "^3.1.1"
   }
 }
