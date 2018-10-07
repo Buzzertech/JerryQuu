@@ -133,6 +133,66 @@ describe('JerryQuu', () => {
         });
     });
 
+    it('should retry if failed', () => {
+        testEmailQueue.registerNamespace('RetryTest');
+        testEmailQueue.pushMessage({
+            to: 'test@buzzertech.com',
+            from: 'checkflow@buzzertech.com',
+            subject: 'Test Mail',
+            html: '<html>Hello world</html>',
+            text: 'Hello world'
+        });
+        Nodemailer.mock.shouldFailOnce();
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                expect(Nodemailer.mock.sentMail().length).to.equal(1);
+                resolve();
+            }, 0);
+        });
+    });
+
+    it('set custom maxRetries', () => {
+        const emailQueue = new EmailQueue({
+            maxRetries: 5,
+            publisherRedis: publisherRedis,
+            subscriberRedis: subscriberRedis,
+            redis: redis,
+            transport: Nodemailer.createTransport({
+                host: '127.0.0.1',
+                port: '587'
+            })
+        });
+
+        emailQueue.registerNamespace('CustomRetryTest');
+        emailQueue.pushMessage({
+            to: 'test@buzzertech.com',
+            from: 'checkflow@buzzertech.com',
+            subject: 'Test Mail',
+            html: '<html>Hello world</html>',
+            text: 'Hello world'
+        });
+        Nodemailer.mock.shouldFail(true);
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+        subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+
+        setTimeout(() => {
+            Nodemailer.mock.shouldFail(false);
+            subscriberRedis.on.callArgWith(1, 'mychannel', 'rpush');
+        }, 0);
+
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                expect(Nodemailer.mock.sentMail().length).to.equal(1);
+                resolve();
+            }, 10);
+        });
+    });
+
     afterEach(() => {
         Nodemailer.mock.reset();
         redis.flushall();
