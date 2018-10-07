@@ -16,3 +16,18 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn test
+  release:
+    docker:
+      - image: circleci/node:8.3
+    steps:
+      - checkout
+      - run: npm install
+      - run: npx semantic-release
+workflows:
+  version: 2
+  test_and_release:
+    jobs:
+      - build
+      - release:
+          requires:
+            - build
